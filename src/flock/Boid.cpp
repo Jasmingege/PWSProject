@@ -12,6 +12,9 @@ Boid::Boid()
     maxspeed = 4;
     maxforce = 0.2;
     bgcolor=3;
+	age=0;
+	isDead= false;
+	maxAge=100;
 }
 
 //Definition of the superclass Boid constructor with given parameters for the position
@@ -32,6 +35,9 @@ Boid::Boid(int x, int y)
     maxspeed = 4;
     maxforce = 0.2;
     bgcolor=3;
+	age=0;
+	isDead=false;
+	maxAge=100;
 	
 }
 
@@ -270,4 +276,10 @@ ofVec2f Boid::cohesion(vector<ofPtr<Boid>> boids)
         return steer(sum, false);  // Steer towards the location
     }
     return sum;
+}
+
+
+void Boid :: UpdateLife() {
+	age++;
+	if(age>maxAge) isDead =true;
 }

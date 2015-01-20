@@ -23,6 +23,7 @@ public:
     void arrive(ofVec2f target);                    //function for arrival to the target
 
     void flock(vector<ofPtr<Boid>> boids);          //function for flocking
+	virtual void UpdateLife();
 
     ofVec2f steer(ofVec2f target, bool slowdown);   //2D vector which give the direction
     ofVec2f separate(vector<ofPtr<Boid>> boids);    //2D vector for separation between boids
@@ -37,6 +38,9 @@ public:
     float r;										//radius
     float maxforce;
     float maxspeed;
+	int age;
+	int maxAge;
+	bool isDead;
 
 };
 

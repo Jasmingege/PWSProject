@@ -10,6 +10,7 @@ FishOne::FishOne(void)
     maxspeed = 4;
     maxforce = 0.2;
     bgcolor = 3;
+	life = 10;
 }
 
 FishOne::FishOne(int x, int y)
@@ -28,6 +29,8 @@ FishOne::FishOne(int x, int y)
 FishOne::~FishOne(void)
 {
 }
+
+
 
 void FishOne::draw() 
 {

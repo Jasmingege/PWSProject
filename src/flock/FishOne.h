@@ -14,6 +14,8 @@ public:
 
 	void draw();
 
+	int life;
+
 protected:
 private:
 };

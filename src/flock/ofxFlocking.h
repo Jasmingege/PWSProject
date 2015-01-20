@@ -11,7 +11,6 @@ public:
     void update();
     void draw();
     void addBoid();
-    void addBoid(int x, int y);
 
 	vector<ofPtr<Boid>> boids;
 };

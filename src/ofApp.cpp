@@ -156,12 +156,38 @@ void ofApp::draw(){
 		flock.boids.at(i)->draw();
 	}
 
+
+	//Killing the fishes
+	int deadFishNum =100;
+
+	for (int l = 0 ; l < flock.boids.size(); l++) 
+	{
+		ofPtr<Boid> fish = flock.boids.at(l);
+
+
+		if(fish->getPosition().y < ofGetHeight() * 0.5f)
+		{
+			fish->UpdateLife();
+			deadFishNum = l;
+			cout<< l;
+		}
+			if(deadFishNum != 100 && fish->isDead){
+		flock.boids.erase(flock.boids.begin()+deadFishNum);	}			//erase that fish
+	else{ /* cout<< "I KILLED THEM ALL! ";*/}
+	}
+	
+
+
+
+
 	// Draw water
 	ofSetColor(0, 0, 255, 150); 
 	ofRect(0, ofGetHeight() * 0.5f, ofGetWidth(), ofGetHeight() * 0.5f);
 
 	// draw the ground
 	box2d.drawGround();
+
+	ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10,15);
 }
 
 //--------------------------------------------------------------
