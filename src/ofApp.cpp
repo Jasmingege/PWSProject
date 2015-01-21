@@ -144,29 +144,6 @@ void ofApp::update(){
 
 	// After everything is done
 	box2d.update();
-}
-
-//--------------------------------------------------------------
-void ofApp::draw(){
-
-	ofSetColor(150);										// Set default background color a nice shade of gray
-
-	//grayImage.draw(0, 0, grayImage.width, grayImage.height);		// Draw threshold image
-	//contourFinder.draw(0, 0, grayImage.width, grayImage.height);	// Draw the found contours
-
-	// Draw players
-	ofFill();
-	ofSetColor(0, 0, 255);
-	playerLeft->draw();
-	ofSetColor(255, 0, 0);
-	playerRight->draw();
-
-	// Draw box2D
-	ofSetColor(255, 255, 255);
-	for (int i = 2; i < boids.size(); i++) {
-		boids.at(i)->draw();
-	}
-
 
 	//Killing the fishes
 	explode.loadSound("explosion.wav");
@@ -189,11 +166,29 @@ void ofApp::draw(){
 		}			
 		else{ /* cout<< "I KILLED THEM ALL! ";*/}						//something could happen if al the fishes are killed. 
 	}
+}
+
+//--------------------------------------------------------------
+void ofApp::draw(){
+
+	ofSetColor(150);										// Set default background color a nice shade of gray
+
+	//grayImage.draw(0, 0, grayImage.width, grayImage.height);		// Draw threshold image
+	//contourFinder.draw(0, 0, grayImage.width, grayImage.height);	// Draw the found contours
+
+	// Draw players
+	ofFill();
+	ofSetColor(0, 0, 255);
+	playerLeft->draw();
+	ofSetColor(255, 0, 0);
+	playerRight->draw();
+
+	// Draw box2D
+	ofSetColor(255, 255, 255);
+	for (int i = 2; i < boids.size(); i++) {
+		boids.at(i)->draw();
+	}
 	
-
-
-
-
 	// Draw water
 	ofSetColor(0, 0, 255, 150); 
 	ofRect(0, ofGetHeight() * 0.5f, ofGetWidth(), ofGetHeight() * 0.5f);
