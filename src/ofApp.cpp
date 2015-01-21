@@ -1,3 +1,9 @@
+///////////////////////////////////////////////////////
+///// Programming with Structures Module 6 CreaTe /////
+/////  Created by Peter Verzijl and Gege Zhang    /////
+/////                  2015                       /////
+///////////////////////////////////////////////////////
+
 #include "ofApp.h"
 #include "flock\FishOne.h"
 #include "flock\FishTwo.h"
@@ -5,18 +11,20 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-	ofSetVerticalSync(true);			// Set graphics stuff
-	ofSetLogLevel(OF_LOG_NOTICE);		// Debug level
+	ofSetVerticalSync(true);			// Set graphics so it runs smoothly
+//	ofSetLogLevel(OF_LOG_NOTICE);		// Debug level
 
 	kinect.setRegistration(true);		// Registrate depth checking
 
 	kinect.init(false, false);			// Disables video image (faster fps)
 	kinect.open();						// Opens first available kinect
 
-	kinectAngle = 0;					// Level kinect at startup
+	kinectAngle = 10;					// Level kinect at startup
 	kinect.setCameraTiltAngle(kinectAngle);
 
 	// Debug kinect startup messages
+	// Gege's computer lagging
+	/*
 	if (kinect.isConnected()) 
 	{
 		ofLogNotice() << "sensor-emitter dist: " << kinect.getSensorEmitterDistance() << "cm";
@@ -24,6 +32,7 @@ void ofApp::setup(){
 		ofLogNotice() << "zero plane pixel size: " << kinect.getZeroPlanePixelSize() << "mm";
 		ofLogNotice() << "zero plane dist: " << kinect.getZeroPlaneDistance() << "mm";
 	}
+	*/
 
 	// Populate and init image with correct image size
 	grayImage.allocate(kinect.width, kinect.height);
@@ -34,7 +43,7 @@ void ofApp::setup(){
 
 	// Set box2d parameters
 	box2d.init();
-	box2d.setGravity(0, 0);				// Set a vector2 for the gravity
+	box2d.setGravity(0, 0);				// Set a vector2 for the gravity to 0 initially
 	box2d.createBounds();				// Create the bounds of the box2d world
 	box2d.setFPS(30.0);					// Set the physics update rate
 
@@ -47,7 +56,7 @@ void ofApp::setup(){
 	playerLeft->setFixedRotation(true);
 	playerLeft->setRotationFriction(1000);
 	playerLeft->setRotation(0);
-	flock.boids.push_back(playerLeft);
+	boids.push_back(playerLeft);
 
 	// Player right
 	playerRight = ofPtr<Boid>(new Boid);
@@ -56,13 +65,15 @@ void ofApp::setup(){
 	playerRight->setFixedRotation(true);
 	playerRight->setRotationFriction(1000);
 	playerRight->setRotation(0);
-	flock.boids.push_back(playerRight);
+	boids.push_back(playerRight);
 	
-	for (int i = 0; i < 60; i++)
+
+	//generating new fishes (20)
+	for (int i = 0; i < 20; i++)
 	{
-		flock.boids.push_back(ofPtr<FishOne>(new FishOne));
-		flock.boids.back().get()->setPhysics(3.0, 0.53, 0.1);
-		flock.boids.back().get()->setup(box2d.getWorld(), ofRandomWidth(), 50, 20, 20);
+		boids.push_back(ofPtr<FishOne>(new FishOne));
+		boids.back().get()->setPhysics(3.0, 0.53, 0.1);
+		boids.back().get()->setup(box2d.getWorld(), ofRandomWidth(), 50, 20, 20);
 	}
 
 	ofSetFrameRate(60);					// Try to keep the display framerate at 60fps
@@ -96,7 +107,7 @@ void ofApp::update(){
 	}
 
 	// Now we have the blobs from findContours, iterate trough them
-	if (contourFinder.nBlobs > 0 && flock.boids.size() > 0) {
+	if (contourFinder.nBlobs > 0 && boids.size() > 0) {
 		ofxCvBlob blob = contourFinder.blobs.at(0);
 		ofVec2f blobPos = ofVec2f(blob.centroid.x, blob.centroid.y);
 		
@@ -117,9 +128,9 @@ void ofApp::update(){
 	}
 
 	// Update movement of boxes
-	for (int i=0; i<flock.boids.size(); i++) 
+	for (int i=0; i<boids.size(); i++) 
 	{
-		ofPtr<ofxBox2dRect> boid = flock.boids.at(i);
+		ofPtr<ofxBox2dRect> boid = boids.at(i);
 		boid->update();
 		if (boid->getPosition().y < ofGetHeight() * 0.5f)
 		{
@@ -140,8 +151,8 @@ void ofApp::draw(){
 
 	ofSetColor(150);										// Set default background color a nice shade of gray
 
-	grayImage.draw(0, 0, grayImage.width, grayImage.height);		// Draw threshold image
-	contourFinder.draw(0, 0, grayImage.width, grayImage.height);	// Draw the found contours
+	//grayImage.draw(0, 0, grayImage.width, grayImage.height);		// Draw threshold image
+	//contourFinder.draw(0, 0, grayImage.width, grayImage.height);	// Draw the found contours
 
 	// Draw players
 	ofFill();
@@ -152,28 +163,31 @@ void ofApp::draw(){
 
 	// Draw box2D
 	ofSetColor(255, 255, 255);
-	for (int i = 2; i < flock.boids.size(); i++) {
-		flock.boids.at(i)->draw();
+	for (int i = 2; i < boids.size(); i++) {
+		boids.at(i)->draw();
 	}
 
 
 	//Killing the fishes
-	int deadFishNum =100;
+	explode.loadSound("explosion.wav");
+	int deadFishNum =100;												//setting number if no fishes are left -> end destroying more fishes to prevent error
 
-	for (int l = 0 ; l < flock.boids.size(); l++) 
+	for (int l = 0 ; l < boids.size(); l++)						//loop through all the fishes
 	{
-		ofPtr<Boid> fish = flock.boids.at(l);
+		ofPtr<Boid> fish = boids.at(l);							//set ofPointer fish equal the "i" one in the loop
 
-
-		if(fish->getPosition().y < ofGetHeight() * 0.5f)
+		if(fish->getPosition().y < ofGetHeight() * 0.5f)				//if the specific fish is on the top half of the screen
 		{
-			fish->UpdateLife();
-			deadFishNum = l;
-			cout<< l;
+			fish->UpdateLife();											//run update life (lifespan --)
+			deadFishNum = l;											//save the array number of the "i"-th fish in deadFishNum
 		}
-			if(deadFishNum != 100 && fish->isDead){
-		flock.boids.erase(flock.boids.begin()+deadFishNum);	}			//erase that fish
-	else{ /* cout<< "I KILLED THEM ALL! ";*/}
+
+		if(deadFishNum != 100 && fish->isDead)							//erase fish at i if not all fishes are killed and if boolean isDead is true.
+		{
+			boids.erase(boids.begin()+deadFishNum);			//erase that fish
+			explode.play();
+		}			
+		else{ /* cout<< "I KILLED THEM ALL! ";*/}						//something could happen if al the fishes are killed. 
 	}
 	
 

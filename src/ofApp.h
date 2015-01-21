@@ -4,7 +4,7 @@
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
 #include "ofxBox2d.h"
-#include "flock\ofxFlocking.h"
+#include "flock\Boid.h"
 
 class ofApp : public ofBaseApp{
 
@@ -35,14 +35,13 @@ class ofApp : public ofBaseApp{
 		bool useThreshold;
 		int nearThreshold;
 		int farThreshold;
+		ofSoundPlayer explode;
 
 		// Box2D parameters
 		ofxBox2d box2d;
 
-		ofxFlocking flock;
+		vector<ofPtr<Boid>> boids;
 		
-		//vector<ofPtr<ofxBox2dRect>> boxes;
-
 		ofPtr<Boid> playerLeft;
 		ofPtr<Boid> playerRight;
 };

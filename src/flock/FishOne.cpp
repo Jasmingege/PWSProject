@@ -6,11 +6,10 @@ FishOne::FishOne(void)
 
 	setPosition(ofRandomWidth(),ofRandomHeight());  // sets starting random location
     acc.set(0,0);
-    r = 3.0;
     maxspeed = 4;
     maxforce = 0.2;
-    bgcolor = 3;
 	life = 10;
+
 }
 
 FishOne::FishOne(int x, int y)
@@ -19,10 +18,8 @@ FishOne::FishOne(int x, int y)
 
 	setPosition(x, y);  // sets starting random location
     acc.set(0,0);
-    r = 3.0;
     maxspeed = 4;
     maxforce = 0.2;
-    bgcolor = 3;
 }
 
 

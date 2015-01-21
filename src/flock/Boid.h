@@ -23,7 +23,7 @@ public:
     void arrive(ofVec2f target);                    //function for arrival to the target
 
     void flock(vector<ofPtr<Boid>> boids);          //function for flocking
-	virtual void UpdateLife();
+	void UpdateLife();
 
     ofVec2f steer(ofVec2f target, bool slowdown);   //2D vector which give the direction
     ofVec2f separate(vector<ofPtr<Boid>> boids);    //2D vector for separation between boids
@@ -31,11 +31,6 @@ public:
     ofVec2f cohesion(vector<ofPtr<Boid>> boids);    //2D vector for the solidarity of the boids swarm
     ofVec2f acc;									//2D vector variables for the location, velocity and acceleration
 
-    int bgcolor;
-    ofImage fishonepic;								//image on the boids Fishone
-    ofImage fishtwopic;								//image on the boids Fishtwo
-
-    float r;										//radius
     float maxforce;
     float maxspeed;
 	int age;

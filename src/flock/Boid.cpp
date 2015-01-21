@@ -8,10 +8,8 @@ Boid::Boid()
 {
     setPosition(ofRandomWidth(),ofRandomHeight());  // sets starting random location
     acc.set(0,0);
-    r = 3.0;
     maxspeed = 4;
     maxforce = 0.2;
-    bgcolor=3;
 	age=0;
 	isDead= false;
 	maxAge=100;
@@ -31,10 +29,8 @@ Boid::Boid(int x, int y)
 
 	acc.set(0,0);
 
-    r = 3.0;
     maxspeed = 4;
     maxforce = 0.2;
-    bgcolor=3;
 	age=0;
 	isDead=false;
 	maxAge=100;
@@ -130,26 +126,6 @@ ofVec2f Boid::steer(ofVec2f target, bool slowdown)
 void Boid::draw()
 {
 	ofxBox2dRect::draw();
-
-    float angle = (float)atan2(-getVelocity().y, getVelocity().x);
-    float theta =  -1.0*angle;
-    float heading2D = ofRadToDeg(theta)+90;
-
-    ofPushStyle();
-		ofFill();
-		ofPushMatrix();
-			ofTranslate(getPosition().x, getPosition().y);
-			ofRotateZ(heading2D);
-			if(bgcolor==2)
-			{
-				fishonepic.draw(0,0);       // draws the image on Fishone
-			}
-			else if (bgcolor==1)    //sets the color for the Fishtwo boids
-			{
-				fishtwopic.draw(0,0);       // draws the image of the Fishtwo
-			}
-		ofPopMatrix();
-    ofPopStyle();
 }
 
 // Definition of the superclass Boid method that calculates the flocking behaviour of the Boid boids

@@ -93,7 +93,6 @@
     <ClCompile Include="src\flock\Boid.cpp" />
     <ClCompile Include="src\flock\FishOne.cpp" />
     <ClCompile Include="src\flock\FishTwo.cpp" />
-    <ClCompile Include="src\flock\ofxFlocking.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="..\..\..\addons\ofxKinect\src\extra\ofxKinectExtras.cpp" />
@@ -175,7 +174,6 @@
     <ClInclude Include="src\flock\Boid.h" />
     <ClInclude Include="src\flock\FishOne.h" />
     <ClInclude Include="src\flock\FishTwo.h" />
-    <ClInclude Include="src\flock\ofxFlocking.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxKinect\src\extra\ofxKinectExtras.h" />
     <ClInclude Include="..\..\..\addons\ofxKinect\src\ofxBase3DVideo.h" />
